@@ -7,6 +7,8 @@ import ContactPage from '../../features/contact/ContactPage';
 import AboutPage from '../../features/about/AboutPage';
 import ServerError from '../errors/ServerError';
 import NotFound from '../errors/NotFound';
+import BasketPage from '../../features/basket/BasketPage';
+import CheckoutPage from '../../features/checkout/CheckoutPage';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,8 @@ const router = createBrowserRouter([
         path: 'contact',
         element: <ContactPage></ContactPage>,
       },
+      { path: 'basket', element: <BasketPage /> },
+      { path: 'checkout', element: <CheckoutPage /> },
       {
         path: 'server-error',
         element: <ServerError></ServerError>,
