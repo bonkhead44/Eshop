@@ -8,6 +8,7 @@ import { Basket, BasketItem } from '../../app/models/basket';
 import BasketTable from './BasketTable';
 import { useStoreContext } from '../../app/context/StoreContext';
 import BasketSummary from './BasketSummary';
+import { useAppSelector } from '../../app/store/configureStore';
 
 const BasketPage = () => {
   // const b:Basket = {id: 0, buyerId: '', items: []};
@@ -29,7 +30,8 @@ const BasketPage = () => {
   // if (loading)
   //   return <LoadingComponent message="Loading busket ....."></LoadingComponent>;
 
-  const { basket } = useStoreContext();
+  // const { basket } = useStoreContext();
+  const { basket } = useAppSelector(state => state.basket);
 
   return (
     <>
