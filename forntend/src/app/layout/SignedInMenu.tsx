@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { signOut } from '../../features/account/accountSlice';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
+import { clearBasket } from '../../features/basket/basketSlice';
 
 export default function SignedInMenu() {
   const dispatch = useAppDispatch();
@@ -33,6 +34,7 @@ export default function SignedInMenu() {
         <MenuItem
           onClick={() => {
             dispatch(signOut());
+            dispatch(clearBasket());
           }}
         >
           Logout

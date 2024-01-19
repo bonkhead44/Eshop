@@ -60,9 +60,14 @@ namespace backend.Controllers
 
         private Basket CreateBasket()
         {
-            var buyerId = Guid.NewGuid().ToString();
-            var cookiesOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
-            Response.Cookies.Append("buyerId", buyerId, cookiesOptions);
+            //var buyerId = Guid.NewGuid().ToString();
+            var buyerId = User.Identity?.Name;
+            if (string.IsNullOrEmpty(buyerId))
+            {
+                buyerId = Guid.NewGuid().ToString();
+                var cookiesOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
+                Response.Cookies.Append("buyerId", buyerId, cookiesOptions);
+            }
 
             var basket = new Basket { BuyerId = buyerId };
             _context.Baskets.Add(basket);
@@ -72,12 +77,21 @@ namespace backend.Controllers
 
         private async Task<Basket> RetreiveBasket(string buyerId)
         {
-            return await _context.Baskets.Include(i => i.Items).ThenInclude(p => p.Product).FirstOrDefaultAsync(basket => basket.BuyerId == buyerId);
+            if (string.IsNullOrEmpty(buyerId))
+            {
+                Response.Cookies.Delete("buyerId");
+                return null;
+            }
+
+            return await _context.Baskets
+                .Include(i => i.Items)
+                .ThenInclude(p => p.Product)
+                .FirstOrDefaultAsync(basket => basket.BuyerId == buyerId);
         }
 
         private string GetBuyerId()
         {
-            return Request.Cookies["buyerId"];
+            return User.Identity?.Name ?? Request.Cookies["buyerId"];
         }
     }
 }

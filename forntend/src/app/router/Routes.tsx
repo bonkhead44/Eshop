@@ -11,12 +11,18 @@ import BasketPage from '../../features/basket/BasketPage';
 import CheckoutPage from '../../features/checkout/CheckoutPage';
 import Login from '../../features/account/Login';
 import Register from '../../features/account/Register';
+import RequireAuth from './RequireAuth';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App></App>,
     children: [
+      {
+        // authenticated routes
+        element: <RequireAuth></RequireAuth>,
+        children: [{ path: 'checkout', element: <CheckoutPage /> }],
+      },
       {
         path: '',
         element: <HomePage></HomePage>,
@@ -38,8 +44,7 @@ const router = createBrowserRouter([
         element: <ContactPage></ContactPage>,
       },
       { path: 'basket', element: <BasketPage /> },
-      { path: 'checkout', element: <CheckoutPage /> },
-      
+
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
       {

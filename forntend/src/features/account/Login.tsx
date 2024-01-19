@@ -10,12 +10,13 @@ import {
   Grid,
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/store/configureStore';
 import { signInUser } from './accountSlice';
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
 
   const {
@@ -29,7 +30,7 @@ export default function Login() {
   async function submitForm(data: FieldValues) {
     try {
       await dispatch(signInUser(data));
-      navigate('/catalog');
+      navigate(location.state?.from || '/catalog');
     } catch (error) {
       console.log(error);
     }

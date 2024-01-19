@@ -48,7 +48,7 @@ const Header = ({ handleThemeChange, darkMode }: Props) => {
   const { basket } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.account);
 
-  const itemsCount = basket.items?.reduce(
+  const itemsCount = basket?.items.reduce(
     (sum, basket) => sum + basket.quantity,
     0
   );

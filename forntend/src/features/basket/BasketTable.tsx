@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
 import { addBasketItemAsync, removeBasketItemAsync, setBasket } from '../../features/basket/basketSlice';
 
 interface Props {
-  items: BasketItem[];
+  items?: BasketItem[];
 }
 
  const BasketTable = ({ items }: Props) => {
@@ -58,7 +58,7 @@ interface Props {
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((item) => (
+          {items?.map((item) => (
             <TableRow
               key={item.productId}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
