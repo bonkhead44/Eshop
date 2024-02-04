@@ -48,8 +48,9 @@ builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>(opt =>
 {
     opt.User.RequireUniqueEmail = true;
-}).AddRoles<Role>()
-.AddEntityFrameworkStores<StoreContext>();
+})
+    .AddRoles<Role>()
+    .AddEntityFrameworkStores<StoreContext>();
 builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

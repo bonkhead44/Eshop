@@ -1,4 +1,8 @@
-import { Remove, Add, Delete, DeleteOutlined, DeleteForeverOutlined } from '@mui/icons-material';
+import {
+  Remove,
+  Add,
+  DeleteForeverOutlined,
+} from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
   TableContainer,
@@ -11,23 +15,25 @@ import {
   Box,
 } from '@mui/material';
 import { BasketItem } from '../../app/models/basket';
-import { useState } from 'react';
-import agent from '../../app/api/agent';
 // import { useStoreContext } from '../../app/context/StoreContext';
 import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
-import { addBasketItemAsync, removeBasketItemAsync, setBasket } from '../../features/basket/basketSlice';
+import {
+  addBasketItemAsync,
+  removeBasketItemAsync,
+} from '../../features/basket/basketSlice';
 
 interface Props {
   items?: BasketItem[];
+  isBasket?: boolean;
 }
 
- const BasketTable = ({ items }: Props) => {
+const BasketTable = ({ items, isBasket = true }: Props) => {
   // const [status, setStatus] = useState({
   //   loading: false,
   //   name: '',
   // });
   // const { setBasket, removeItem } = useStoreContext();
-  const {status} = useAppSelector(state => state.basket);
+  const { status } = useAppSelector((state) => state.basket);
   const dispatch = useAppDispatch();
 
   // const handleAddItem = (productId: number, name: string) => {
@@ -54,7 +60,7 @@ interface Props {
             <TableCell align="right">Price</TableCell>
             <TableCell align="center">Quantity</TableCell>
             <TableCell align="right">Subtotal</TableCell>
-            <TableCell align="right"></TableCell>
+            {isBasket && <TableCell align="right"></TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -77,37 +83,66 @@ interface Props {
                 ${(item.price / 100).toFixed(2)}
               </TableCell>
               <TableCell align="center">
-                <LoadingButton
-                  loading={status === 'pendingRemoveItem' + item.productId + 'remove'}
-                  onClick={() => dispatch(removeBasketItemAsync({productId: item.productId, quantity:1, name: 'remove'}))}
-                  color="error"
-                >
-                  <Remove />
-                </LoadingButton>
+                {isBasket && (
+                  <LoadingButton
+                    loading={
+                      status === 'pendingRemoveItem' + item.productId + 'remove'
+                    }
+                    onClick={() =>
+                      dispatch(
+                        removeBasketItemAsync({
+                          productId: item.productId,
+                          quantity: 1,
+                          name: 'remove',
+                        })
+                      )
+                    }
+                    color="error"
+                  >
+                    <Remove />
+                  </LoadingButton>
+                )}
+
                 {item.quantity}
-                <LoadingButton
-                  loading={status === 'pendingAddItem' + item.productId}
-                  onClick={() => dispatch(addBasketItemAsync({productId: item.productId}))}
-                  color="secondary"
-                >
-                  <Add />
-                </LoadingButton>
+                {isBasket && (
+                  <LoadingButton
+                    loading={status === 'pendingAddItem' + item.productId}
+                    onClick={() =>
+                      dispatch(
+                        addBasketItemAsync({ productId: item.productId })
+                      )
+                    }
+                    color="secondary"
+                  >
+                    <Add />
+                  </LoadingButton>
+                )}
               </TableCell>
               <TableCell align="right">
                 ${((item.price / 100) * item.quantity).toFixed(2)}
               </TableCell>
 
-              <TableCell align="right">
-                <LoadingButton
-                  loading={status === 'pendingRemoveItem' + item.productId + 'delete'}
-                  onClick={() =>
-                    dispatch(removeBasketItemAsync({productId: item.productId, quantity:item.quantity, name: 'delete'}))
-                  }
-                  color="error"
-                >
-                  <DeleteForeverOutlined />
-                </LoadingButton>
-              </TableCell>
+              {isBasket && (
+                <TableCell align="right">
+                  <LoadingButton
+                    loading={
+                      status === 'pendingRemoveItem' + item.productId + 'delete'
+                    }
+                    onClick={() =>
+                      dispatch(
+                        removeBasketItemAsync({
+                          productId: item.productId,
+                          quantity: item.quantity,
+                          name: 'delete',
+                        })
+                      )
+                    }
+                    color="error"
+                  >
+                    <DeleteForeverOutlined />
+                  </LoadingButton>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
