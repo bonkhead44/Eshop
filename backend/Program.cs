@@ -52,6 +52,7 @@ builder.Services.AddIdentityCore<User>(opt =>
     .AddRoles<Role>()
     .AddEntityFrameworkStores<StoreContext>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<PaymentService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
